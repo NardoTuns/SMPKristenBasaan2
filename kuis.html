@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kuis IPA Interaktif</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #ACB6E5);
+      padding: 30px;
+      color: #333;
+    }
+    .container {
+      background: white;
+      max-width: 500px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    h2 {
+      text-align: center;
+      color: #4A90E2;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background-color: #4A90E2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #357ABD;
+    }
+    #status {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Kuis IPA Sederhana</h2>
+    <form id="quizForm" name="quizForm">
+      <label>Nama:</label>
+      <input type="text" name="nama" required>
+
+      <label>Kelas:</label>
+      <input type="text" name="kelas" required>
+
+      <label>1. Air membeku pada suhu ...</label>
+      <input type="text" name="jawaban1" required>
+
+      <label>2. Zat yang dapat berubah bentuk disebut ...</label>
+      <input type="text" name="jawaban2" required>
+
+      <button type="submit">Kirim Jawaban</button>
+    </form>
+    <p id="status"></p>
+  </div>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzEYpoGmHWhboObSsysL869rx2syEz9NlNNmG_hPm_Z5iwIgxBzjiZ3LAVDIh9FvrYe/exec';
+    const form = document.forms['quizForm'];
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      status.innerHTML = "Mengirim...";
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+          status.innerHTML = "✅ Jawaban berhasil dikirim!";
+          form.reset();
+        })
+        .catch(error => {
+          console.error('Error!', error.message);
+          status.innerHTML = "❌ Gagal mengirim jawaban.";
+        });
+    });
+  </script>
+</body>
+</html>
